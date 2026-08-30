@@ -1,55 +1,28 @@
-/* Vaagai 2k26 custom registration front end.
- * Backend endpoint is configured in CONFIG.endpoint below.
- * The site remains static on GitHub Pages; submissions are sent to the organiser's
- * serverless endpoint, which should write to a Google Sheet/Excel-compatible table.
- */
+/* Vaagai 2k26 — custom multi-event registration frontend */
 const CONFIG = {
-  endpoint: '',
+  endpoint: (window.VAAGAI_REGISTRATION_CONFIG || {}).endpoint || '',
   events: {
-    'paper-presentation': {name:'Paper Presentation', type:'Team / Individual', fee:'₹200 solo / ₹400 team', teamMax:4, fields:['topic']},
-    'cad-modeling': {name:'CAD Modeling', type:'Individual', fee:'₹200', teamMax:1, fields:['software']},
-    'ansys-simulation': {name:'ANSYS Simulation Challenge', type:'Individual', fee:'₹200', teamMax:1, fields:['software']},
-    'glider-competition': {name:'Glider Competition', type:'Individual / Team', fee:'₹200 single / ₹250 doubles', teamMax:2, fields:['memberCount']},
-    'technical-quiz': {name:'Technical Quiz', type:'Team', fee:'₹100', teamMax:3, fields:['memberCount']},
-    'line-follower': {name:'Line Follower', type:'Team', fee:'₹300', teamMax:3, fields:['memberCount']},
-    'water-rocketry': {name:'Water Rocketry', type:'Individual / Team', fee:'₹200 single / ₹250 doubles', teamMax:2, fields:['memberCount']},
-    'free-fire': {name:'Free Fire', type:'Squad', fee:'₹100 / squad', teamMax:4, fields:['memberCount']},
-    'carrom': {name:'Carrom', type:'Team', fee:'₹100 / team', teamMax:2, fields:['memberCount']},
-    'ipl-auction': {name:'IPL Auction', type:'Team', fee:'₹100 / team', teamMax:4, fields:['memberCount']},
-    'treasure-hunt': {name:'Treasure Hunt', type:'To be announced', fee:'To be announced', teamMax:6, fields:['memberCount']},
-    'chess': {name:'Chess', type:'Individual', fee:'₹50 / head', teamMax:1, fields:[]}
+    'paper-presentation': {name:'Paper Presentation',type:'Team / Individual',fee:'₹200 solo / ₹400 team',teamMax:4,fields:['topic']},
+    'cad-modeling': {name:'CAD Modeling',type:'Individual',fee:'₹200',teamMax:1,fields:['software']},
+    'ansys-simulation': {name:'ANSYS Simulation Challenge',type:'Individual',fee:'₹200',teamMax:1,fields:['software']},
+    'glider-competition': {name:'Glider Competition',type:'Individual / Team',fee:'₹200 single / ₹250 doubles',teamMax:2,fields:['memberCount']},
+    'technical-quiz': {name:'Technical Quiz',type:'Team',fee:'₹100',teamMax:3,fields:['memberCount']},
+    'line-follower': {name:'Line Follower',type:'Team',fee:'₹300',teamMax:3,fields:['memberCount']},
+    'water-rocketry': {name:'Water Rocketry',type:'Individual / Team',fee:'₹200 single / ₹250 doubles',teamMax:2,fields:['memberCount']},
+    'free-fire': {name:'Free Fire',type:'Squad',fee:'₹100 / squad',teamMax:4,fields:['memberCount']},
+    'carrom': {name:'Carrom',type:'Team',fee:'₹100 / team',teamMax:2,fields:['memberCount']},
+    'ipl-auction': {name:'IPL Auction',type:'Team',fee:'₹100 / team',teamMax:4,fields:['memberCount']},
+    'treasure-hunt': {name:'Treasure Hunt',type:'To be announced',fee:'To be announced',teamMax:6,fields:['memberCount']},
+    'chess': {name:'Chess',type:'Individual',fee:'₹50 / head',teamMax:1,fields:[]}
   }
 };
-function qs(sel){return document.querySelector(sel)}
-function getEventKey(){return new URLSearchParams(location.search).get('event')||''}
+function qs(s){return document.querySelector(s)}
 function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function eventCard(key,e){return `<a class="registration-event" href="registration.html?event=${encodeURIComponent(key)}"><span>${esc(e.type)}</span><strong>${esc(e.name)}</strong><small>${esc(e.fee)}</small></a>`}
-function renderChooser(){const el=qs('#event-chooser');if(!el)return;el.innerHTML=Object.entries(CONFIG.events).map(([k,e])=>eventCard(k,e)).join('')}
-function renderForm(key){const e=CONFIG.events[key];const root=qs('#registration-form-root');if(!root)return;if(!e){root.innerHTML='<div class="registration-empty"><h2>Select an event to register</h2><p>Choose an event from the Events page. The registration form will then show only the information needed for that competition.</p></div>';return}
- const team = e.teamMax>1;
- root.innerHTML=`<div class="selected-event"><span class="eyebrow">Selected competition</span><h2>${esc(e.name)}</h2><div class="selection-meta"><span>${esc(e.type)}</span><span>${esc(e.fee)}</span></div></div>
- <form id="custom-registration-form" novalidate>
-   <input type="hidden" name="event" value="${esc(e.name)}">
-   <input type="hidden" name="eventKey" value="${esc(key)}">
-   <div class="form-grid">
-     <label>Participant name<input name="name" required maxlength="80" autocomplete="name"></label>
-     <label>Mobile number<input name="mobile" required inputmode="tel" pattern="[0-9+ ()-]{10,18}" autocomplete="tel"></label>
-     <label>College registration number<input name="collegeRegistrationNumber" required maxlength="40"></label>
-     <label>College name<input name="collegeName" required maxlength="120" autocomplete="organization"></label>
-     <label>Department<input name="department" required maxlength="100"></label>
-     <label>Year of study<input name="year" required maxlength="30" placeholder="e.g. 2nd Year"></label>
-     ${team?`<label>Team name${e.type==='Individual / Team'?' (required for team entries)':''}<input name="teamName" maxlength="80" autocomplete="off"></label><label>Number of members<input name="memberCount" type="number" min="1" max="${e.teamMax}" value="1" required></label>`:''}
-     ${e.fields.includes('topic')?'<label class="full">Paper topic / title<input name="topic" required maxlength="180"></label>':''}
-     ${e.fields.includes('software')?'<label class="full">Preferred software<input name="software" required maxlength="80" placeholder="CATIA / SOLIDWORKS / ANSYS Workbench / Fluent"></label>':''}
-   </div>
-   <label class="consent"><input type="checkbox" name="consent" required> I confirm that the information provided is accurate.</label>
-   <button class="btn btn-primary" type="submit">Submit Registration</button>
-   <p class="form-note">A participant ID or team ID will be generated after successful submission.</p>
-   <div id="form-status" role="status" aria-live="polite"></div>
- </form>`;
- qs('#custom-registration-form').addEventListener('submit',submitForm)
-}
-async function submitForm(ev){ev.preventDefault();const form=ev.currentTarget,status=qs('#form-status');const data=Object.fromEntries(new FormData(form).entries());status.textContent='Submitting…';
- if(!CONFIG.endpoint){status.innerHTML='<strong>Registration backend not connected yet.</strong><br>The front-end is ready, but the secure submission endpoint must be connected before this form is published for real registrations.';return}
- try{const res=await fetch(CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const out=await res.json();if(!res.ok||!out.ok)throw new Error(out.message||'Submission failed');status.innerHTML=`<strong>Registration successful.</strong><br>Your ID: <b>${esc(out.registrationId||out.teamId)}</b>${out.teamId?`<br>Team ID: <b>${esc(out.teamId)}</b>`:''}`;form.reset()}catch(err){status.textContent=`Registration failed: ${err.message}`}}
-document.addEventListener('DOMContentLoaded',()=>{renderChooser();renderForm(getEventKey())});
+function slug(){return new URLSearchParams(location.search).get('event')||''}
+function renderChooser(){const el=qs('#event-chooser');if(!el)return;el.innerHTML=Object.entries(CONFIG.events).map(([k,e])=>`<a class="registration-event" href="registration.html?event=${encodeURIComponent(k)}"><span>${esc(e.type)}</span><strong>${esc(e.name)}</strong><small>${esc(e.fee)}</small></a>`).join('')}
+function renderForm(key){const e=CONFIG.events[key],root=qs('#registration-form-root');if(!root)return;if(!e){root.innerHTML='<div class="registration-empty"><h2>Select an event to register</h2><p>Choose an event above. You can then add another competition before submitting one registration.</p></div>';return}
+const team=e.teamMax>1;root.innerHTML=`<div class="selected-event"><span class="eyebrow">Selected competition</span><h2>${esc(e.name)}</h2><div class="selection-meta"><span>${esc(e.type)}</span><span>${esc(e.fee)}</span></div><p style="margin-top:12px"><a href="registration.html">← Change / add competitions</a></p></div><form id="custom-registration-form" novalidate><div class="selected-events-hidden"></div><div class="form-grid"><label>Participant name<input name="name" required maxlength="80" autocomplete="name"></label><label>Mobile number<input name="mobile" required inputmode="tel" pattern="[0-9+ ()-]{10,18}" autocomplete="tel"></label><label>Email address<input name="email" required type="email" autocomplete="email"></label><label>College registration number<input name="collegeRegistrationNumber" required maxlength="40"></label><label>College name<input name="collegeName" required maxlength="120" autocomplete="organization"></label><label>Department<input name="department" required maxlength="100"></label><label>Year of study<input name="year" required maxlength="30" placeholder="e.g. 2nd Year"></label>${team?`<label>Team name<input name="teamName" maxlength="80"></label><label>Number of members<input name="memberCount" type="number" min="1" max="${e.teamMax}" value="1" required></label><div class="full" id="members-fields"></div>`:''}${e.fields.includes('topic')?'<label class="full">Paper topic / title<input name="topic" required maxlength="180"></label>':''}${e.fields.includes('software')?'<label class="full">Preferred software<input name="software" required maxlength="80" placeholder="CATIA / SOLIDWORKS / ANSYS Workbench / Fluent"></label>':''}</div><label class="consent"><input type="checkbox" name="consent" required> I confirm that the information provided is accurate and I will follow the official rules.</label><button class="btn btn-primary" type="submit">Submit Registration</button><p class="form-note">One submission can contain multiple competitions. A Participant ID is generated for an individual registration; a Team ID is generated when a team event is included.</p><div id="form-status" role="status" aria-live="polite"></div></form>`;
+const mc=qs('input[name="memberCount"]');if(mc){mc.addEventListener('input',renderMembers);renderMembers()}qs('#custom-registration-form').addEventListener('submit',submitForm);}
+function renderMembers(){const box=qs('#members-fields'),mc=qs('input[name="memberCount"]');if(!box||!mc)return;const n=Math.max(1,Number(mc.value||1));const e=CONFIG.events[slug()];const max=e?e.teamMax:6;const count=Math.min(max,n);box.innerHTML=count>1?`<h3>Additional team members</h3>${Array.from({length:count-1},(_,i)=>{const k=i+2;return `<fieldset class="member-box"><legend>Member ${k}</legend><label>Name<input data-member="name"></label><label>Mobile<input data-member="mobile" inputmode="tel"></label><label>College registration no.<input data-member="collegeRegistrationNumber"></label><label>College<input data-member="collegeName"></label><label>Department<input data-member="department"></label><label>Year<input data-member="year"></label></fieldset>`}).join('')}`:''}
+async function submitForm(ev){ev.preventDefault();const form=ev.currentTarget,status=qs('#form-status');if(!CONFIG.endpoint){status.textContent='Registration backend is not connected.';return}const data=Object.fromEntries(new FormData(form).entries());data.events=[CONFIG.events[slug()].name];data.eventDetails={};if(data.topic)data.eventDetails[data.events[0]]={topic:data.topic};if(data.software)data.eventDetails[data.events[0]]={software:data.software};data.members=[...document.querySelectorAll('.member-box')].map(b=>{const g=n=>b.querySelector(`[data-member="${n}"]`)?.value||'';return{name:g('name'),mobile:g('mobile'),collegeRegistrationNumber:g('collegeRegistrationNumber'),collegeName:g('collegeName'),department:g('department'),year:g('year')}});delete data.consent;try{status.textContent='Submitting…';const res=await fetch(CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});const out=await res.json();if(!out.ok)throw new Error(out.message||'Submission failed');status.innerHTML=`<strong>Registration successful.</strong><br>Registration ID: <b>${esc(out.registrationId)}</b><br>Participant ID: <b>${esc(out.participantId)}</b>${out.teamId?`<br>Team ID: <b>${esc(out.teamId)}</b>`:''}<br><br>${out.emailStatus==='Sent'?'Confirmation email sent.':'Registration saved; email delivery failed.'}`;form.reset()}catch(err){status.textContent='Registration failed: '+err.message}}
+document.addEventListener('DOMContentLoaded',()=>{renderChooser();renderForm(slug())});
