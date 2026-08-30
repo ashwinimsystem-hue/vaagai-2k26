@@ -1,0 +1,5 @@
+/* Shared navigation enhancements for Vaagai 2k26 */
+.nav-links a[href="rules.html"] { position: relative; }
+.nav-links a[href="rules.html"]::after { content: ""; position:absolute; left:0; right:0; bottom:-4px; height:1px; transform:scaleX(0); transform-origin:center; transition:transform .2s ease; background:currentColor; }
+.nav-links a[href="rules.html"]:hover::after,.nav-links a[href="rules.html"]:focus-visible::after { transform:scaleX(1); }
+@media (prefers-reduced-motion: reduce) { .nav-links a[href="rules.html"]::after { transition:none; } }
