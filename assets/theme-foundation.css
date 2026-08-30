@@ -1,11 +1,11 @@
-/* Vaagai 2k26 — original pre-assets visual theme: futuristic black / cyan / orange */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap');
-:root{--vaagai-bg:#05060a;--vaagai-surface:#090b12;--vaagai-surface-2:#0d1019;--vaagai-cyan:#00e5ff;--vaagai-cyan-soft:#72f3ff;--vaagai-orange:#ff5a00;--vaagai-orange-soft:#ff8a3d;--vaagai-white:#f4f7fb;--vaagai-muted:#9aa4b2;--vaagai-line:rgba(255,255,255,.10);--vaagai-radius:0px;--vaagai-display:'Orbitron',sans-serif;--vaagai-body:'Rajdhani',sans-serif}
+/* Vaagai 2k26 — classical Tamil architectural theme override */
+:root{--vaagai-bg:#0a0806;--vaagai-surface:#14100b;--vaagai-surface-2:#1b130d;--vaagai-gold:#d9a441;--vaagai-gold-soft:#f0cf8b;--vaagai-maroon:#7c1f1f;--vaagai-stone:#cdbf9e;--vaagai-white:#f3e6c8;--vaagai-line:rgba(217,164,65,.18);--vaagai-display:'EB Garamond',Georgia,serif;--vaagai-body:'Source Sans 3',Arial,sans-serif}
 html{scroll-behavior:smooth;background:var(--vaagai-bg)}
-body{background:radial-gradient(circle at 82% 12%,rgba(0,229,255,.075),transparent 28%),radial-gradient(circle at 12% 35%,rgba(255,90,0,.065),transparent 30%),linear-gradient(180deg,#05060a 0%,#070810 52%,#030407 100%) !important;color:var(--vaagai-white) !important;font-family:var(--vaagai-body) !important}
-body::before{background-image:radial-gradient(rgba(0,229,255,.13) 1px,transparent 1px)!important;background-size:28px 28px!important;opacity:.22!important}
-h1,h2,h3,h4,.brand-mark,.nav-links,.eyebrow,.role,.stat b,.timeline-time{font-family:var(--vaagai-display)!important}
-.section-head::after{display:block;width:72px;height:2px;margin:18px auto 0;background:linear-gradient(90deg,var(--vaagai-cyan),var(--vaagai-orange))!important}
-.btn,.nav-cta{border-radius:2px!important;letter-spacing:.08em}
-a{color:inherit}:where(a,button):focus-visible{outline:2px solid var(--vaagai-cyan)!important;outline-offset:4px}
+body{background:radial-gradient(circle at 50% 0%,rgba(124,31,31,.22),transparent 34%),linear-gradient(180deg,#0a0806 0%,#14100b 52%,#080604 100%) !important;color:var(--vaagai-white) !important;font-family:var(--vaagai-body)!important}
+body::before{background-image:radial-gradient(rgba(217,164,65,.08) 1px,transparent 1px)!important;background-size:28px 28px!important;opacity:.35!important}
+h1,h2,h3,h4,.brand-mark,.stat b,.timeline-time{font-family:var(--vaagai-display)!important}
+.eyebrow,.role,.nav-links{font-family:'Noto Sans Tamil',sans-serif!important}
+.section-head::after{display:block;width:72px;height:2px;margin:18px auto 0;background:linear-gradient(90deg,transparent,var(--vaagai-gold),transparent)!important}
+.btn,.nav-cta{border-radius:999px!important;letter-spacing:.04em}
+a{color:inherit}:where(a,button):focus-visible{outline:2px solid var(--vaagai-gold-soft)!important;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
