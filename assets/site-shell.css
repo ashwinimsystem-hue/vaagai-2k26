@@ -1,0 +1,11 @@
+/* Vaagai 2k26 — shared shell layer. Loaded after page-specific CSS. */
+:root{--v-maroon:#4b1718;--v-deep:#250c0d;--v-gold:#d9a441;--v-ivory:#f7f0df;--v-ink:#171311;--v-muted:#75675a;--v-line:rgba(75,23,24,.18)}
+body{background:var(--v-ivory);color:var(--v-ink)}
+a{color:inherit}
+:where(a,button):focus-visible{outline:2px solid var(--v-gold);outline-offset:4px}
+.nav-links a[href="rules.html"]{position:relative}
+.nav-links a[href="rules.html"]:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transition:transform .2s ease}
+.nav-links a[href="rules.html"]:hover:after,.nav-links a[href="rules.html"]:focus-visible:after{transform:scaleX(1)}
+.section-head:after{content:"";display:block;width:72px;height:2px;margin-top:18px;background:var(--v-gold)}
+.btn,.nav-cta{border-radius:2px;letter-spacing:.04em}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav-links a[href="rules.html"]:after{transition:none}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
