@@ -1,0 +1,22 @@
+/* Vaagai 2k26 — shared visual foundation */
+:root {
+  --vaagai-maroon:#4b1718;
+  --vaagai-maroon-deep:#250c0d;
+  --vaagai-gold:#d9a441;
+  --vaagai-gold-soft:#f0cf82;
+  --vaagai-ivory:#f7f0df;
+  --vaagai-ink:#171311;
+  --vaagai-muted:#75675a;
+  --vaagai-line:rgba(75,23,24,.18);
+  --vaagai-radius:2px;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--vaagai-ivory); color:var(--vaagai-ink); }
+.section-head { position:relative; }
+.section-head::after { content:""; display:block; width:72px; height:2px; margin-top:18px; background:var(--vaagai-gold); }
+.btn,.nav-cta { border-radius:var(--vaagai-radius); letter-spacing:.04em; }
+:where(a,button):focus-visible { outline:2px solid var(--vaagai-gold); outline-offset:4px; }
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+}
